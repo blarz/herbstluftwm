@@ -35,6 +35,7 @@ public:
     std::function<int(Input, Output)> byFirstArg(HSMonitorCommand cmd);
     // relayout the monitor showing this tag, if there is any
     void relayoutTag(HSTag* tag);
+    void raiseMonitor(HSMonitor* m);
 
     int indexInDirection(HSMonitor* m, enum HSDirection dir);
 
@@ -47,6 +48,7 @@ private:
     ByName by_name;
     TagManager* tags;
     Settings* settings;
+    std::vector<HSMonitor*> stack_;
 };
 
 #endif

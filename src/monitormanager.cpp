@@ -1,6 +1,8 @@
 
 #include "monitormanager.h"
 #include <memory>
+#include <cassert>
+#include <algorithm>
 
 #include "tagmanager.h"
 #include "globals.h"
@@ -151,9 +153,19 @@ void MonitorManager::relayoutTag(HSTag *tag)
     }
 }
 
+void MonitorManager::raiseMonitor(HSMonitor *m)
+{
+    auto it = std::find(stack_.begin(), stack_.end(), m);
+    assert(it != stack_.end());
+    // rotate the range [begin, it+1) in such a way
+    // that it becomes the new first element
+    std::rotate(stack_.begin(), it, it + 1);
+}
+
 HSMonitor* MonitorManager::addMonitor(Rectangle rect, HSTag* tag) {
     HSMonitor* m = new HSMonitor(settings, this, rect, tag);
     addIndexed(m);
+    stack_.push_back(m);
     return m;
 }
 
